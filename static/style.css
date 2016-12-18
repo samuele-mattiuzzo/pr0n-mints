@@ -1,0 +1,37 @@
+/*
+    mint color: #aaff80
+    background color: #e0e0eb
+*/
+
+html {
+    color: #e0e0eb;
+}
+
+body {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.jumbotron {
+    background-color: #ffffff;
+    text-align: center;
+    border-bottom: .05rem solid #e5e5e5;
+}
+
+.jumbotron .btn {
+    padding: .75rem 1.5rem;
+    font-size: 1.5rem;
+}
+
+.mint-leaf {
+    color: #aaff80;
+}
+
+/* Responsiveness */
+@media (min-width: 48em) {
+    .container { max-width: 46rem; }
+}
+
+@media screen and (min-width: 48em) {
+    .jumbotron { border-bottom: 0; }
+}
