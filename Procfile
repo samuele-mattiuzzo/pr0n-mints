@@ -1,1 +1,1 @@
-web: go-getting-started
+web: python main.py
