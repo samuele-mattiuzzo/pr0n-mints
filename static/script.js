@@ -1,8 +1,9 @@
-$( document ).ready(function() {
+$(document).ready(function() {
 
     var $mintContainer = $('.jumbotron'),
         $mintText = $('#mint-text'),
         $mintButton = $('#mint-request'),
+        $mintLoader = $('#mint-loader')
         url = $mintText.data('url-for'),
         steps = [
             'A learning experience through the finest pieces of literature...',
@@ -11,6 +12,8 @@ $( document ).ready(function() {
             'Click/tap here to begin.'
         ],
         timer = 3500;
+
+    $mintLoader.hide();
 
     function beginSteps() {
         var i = 0;
@@ -29,12 +32,11 @@ $( document ).ready(function() {
     }
 
     function changeMint(text, reminder=false) {
+        $mintLoader.hide();
         $mintText.find("span")
-            .animate({opacity:0}, 1050)
-            .queue(function(){
-                $(this).text(text).dequeue();
-            })
-            .animate({opacity:1}, 1050);
+            .animate({opacity:0}, 1250)
+            .queue(function(){ $(this).text(text).dequeue(); })
+            .animate({opacity:1}, 1250);
 
         //if (reminder) {
         //    setTimeout(function() {
@@ -44,18 +46,17 @@ $( document ).ready(function() {
     }
 
     function getMint() {
-        $mintText.load(url, function(response, status, xhr) {
-            if (status === 'success') {
-                changeMint(response, reminder=true);
-            }
-            if (status === 'error') {
-                changeMint('Something bad happened, try again.');
-            }
+        $mintLoader.show();
+        $.get(url, function(data) {
+            changeMint(data, reminder=true);
+        }).fail(function(){
+            changeMint('Something went wrong, try again');
         });
     }
 
     $mintButton.on('click', function(){
-        $mintButton.animate({opacity:0});
+        $mintButton.animate({opacity:0}, 1250);
+        $mintButton.remove();
         beginSteps();
     });
 
