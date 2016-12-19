@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configur
 IS_PRODUCTION = os.environ.get('IS_PRODUCTION', False)
 DEBUG = not IS_PRODUCTION
 
-URL = "http://www.youporn.com/random/video/"
+URL = 'http://www.youporn.com/random/video/'
 
 
 # main views
@@ -28,18 +28,21 @@ def mint_please():
     soup = BeautifulSoup(html_file.read())
 
     result = []
-    for div in soup.findAll("div", {"class": "videoComment"}):
-        comment_id = div["data-commentid"]
-        comment = div.find("div", {"class": "commentContent"}).find("p").text.strip()
-        rating = div.find("button", attrs={"data-commentid": comment_id})
-        rating = 0 if rating == '' else int(rating.text.strip())
+    for div in soup.findAll('div', {'class': 'videoComment'}):
+        comment_id = div['data-commentid']
 
-        if rating >= 0:
-            result.append((comment, rating))
+        comment = div.find('div', {'class': 'commentContent'}).find('p').text.strip()
+        rating = div.find('button', {'data-commentid': comment_id, 'class': 'button rateComment like'})
+        rating = rating.text.strip().replace('(', '').replace(')', '')
+
+        result.append((str(comment), int(rating)))
 
     # finds all the comments and picks a random one
-    result = sorted(result, key=lambda res: res[1])
-    return result[randrange(len(result))]
+    if len(result):
+        result = sorted(result, key=lambda res: res[1])
+        return result[randrange(len(result))][0]
+    else:
+        return 'Whoops! Coudln\'t fetch a mint for you, maybe try again?'
 
 
 @app.errorhandler(404)
@@ -49,6 +52,6 @@ def page_not_found(error):
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     app.run(debug=DEBUG)
