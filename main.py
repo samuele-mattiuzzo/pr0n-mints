@@ -1,8 +1,6 @@
-from BeautifulSoup import BeautifulSoup
-from random import randrange
-import os
-import urllib
 from flask import Flask, render_template, request, redirect, url_for
+from utils import fetch_mint
+import os
 
 app = Flask(__name__)
 
@@ -10,8 +8,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
 IS_PRODUCTION = os.environ.get('IS_PRODUCTION', False)
 DEBUG = not IS_PRODUCTION
-
-URL = 'http://www.youporn.com/random/video/'
 
 
 # main views
@@ -24,26 +20,10 @@ def home():
 @app.route('/mint-please/')
 def mint_please():
     """Api view that fetches a new mint."""
-    html_file = urllib.urlopen(URL)
-    soup = BeautifulSoup(html_file.read())
-
-    result = []
-    for div in soup.findAll('div', {'class': 'videoComment'}):
-        comment_id = div['data-commentid']
-
-        comment = div.find('div', {'class': 'commentContent'}).find('p').text.strip()
-        rating = div.find('button', {'data-commentid': comment_id, 'class': 'button rateComment like'})
-        rating = rating.text.strip().replace('(', '').replace(')', '')
-
-        result.append((str(comment), int(rating)))
 
     # finds all the comments and picks a random one
-    if len(result):
-        result = sorted(result, key=lambda res: res[1])
-        return result[randrange(len(result))][0]
-    else:
-        return 'Whoops! Coudln\'t fetch a mint for you, maybe try again?'
-
+    mint = fetch_mint()
+    return mint
 
 @app.errorhandler(404)
 def page_not_found(error):
