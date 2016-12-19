@@ -31,11 +31,11 @@ $(document).ready(function() {
         }, timer);
     }
 
-    function changeMint(text, reminder=false) {
+    function changeMint(snippet, reminder=false) {
         $mintLoader.hide();
         $mintText.find("span")
             .animate({opacity:0}, 1250)
-            .queue(function(){ $(this).text(text).dequeue(); })
+            .queue(function(){ $(this).html(snippet).dequeue(); })
             .animate({opacity:1}, 1250);
 
         //if (reminder) {

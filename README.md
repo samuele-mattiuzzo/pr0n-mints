@@ -23,12 +23,11 @@ The main scraping is done using [BeautifulSoup](https://www.crummy.com/software/
 
 ### Releases
 
+- (Dec 19, 2016) *Ver 0.1.0*: added spinner; better handling of missing/broken comments; exclude bad comments; retrieve author and title; better display of each mint.
 - (Dec 19, 2016) *Ver 0.0.5*: improved layout; transitions between mints; tap on text to fetch new mints; try 5 times if there are no comments.
 - (Dec 19, 2016) *Ver 0.0.1*: fetches a random video, scrapes its commits and sorts them by rating, then returns a random one; first release.
 
 
 ### Roadmap
 
-- (TBD) *Ver 0.1.0*: add a loading spinner;
-- (TBD) *Ver 0.1.1*: inspirational images; create images with porn quotes.
 - (TBD) *Ver 1.0.0*: add database capability to save favourites; fetch from db; add new tab to save new fresh mints; improve UI; share button!
