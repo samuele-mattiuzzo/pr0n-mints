@@ -30,8 +30,9 @@ def fetch_mint(tries=5):
             comment = div.find('div', {'class': 'commentContent'}).find('p').text.strip()
             rating = div.find('button', {'data-commentid': comment_id, 'class': 'button rateComment like'})
             rating = rating.text.strip().replace('(', '').replace(')', '')
-
-            result.append((str(comment), int(rating)))
-
+            try:
+                result.append((str(comment), int(rating)))
+            except:
+                fetch_mint(tries_left)
         result = sorted(result, key=lambda res: res[1])
         return result[randrange(len(comments))][0]
